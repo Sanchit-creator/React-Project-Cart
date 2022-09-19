@@ -1,30 +1,13 @@
 import React from 'react'
 class CartItem extends React.Component{
-    // Step 8, their is no code, we have just removed the state
-
-
-    increaseQuantity = () => {
-        this.setState((prevState) => {
-            return{
-                qty: prevState.qty + 1
-            }
-        })
-    }
-
-    decreaseQuantity = () => {
-        const { qty } = this.state;
-        if (qty === 0) {
-            return;
-        }
-        this.setState((prevState) => {
-            return{
-                qty: prevState.qty - 1
-            }
-        })
-    }
     render() {
-        // Step 7 use props instead of state, props is bringing value from parent called cart
         const {price, title, qty} = this.props.product;
+        const {
+            product, 
+            onIncreaseQuantity,
+            onDereaseQuantity, 
+            onDeleteProduct
+        } = this.props;
         return (
              <div className='cart-item'>
                 <div className='left-block'>
@@ -39,18 +22,22 @@ class CartItem extends React.Component{
                         src="https://as1.ftcdn.net/v2/jpg/02/51/03/82/1000_F_251038282_CLb3d8tk99bGoU9ILEYS8vY215fgRmGT.jpg" 
                         className='action-icons' 
                         alt="increase"
-                        onClick={this.increaseQuantity}
+                        // Step 4 we will not give reference, we will call the function
+                        // we also have to giv props product
+                        onClick={() => onIncreaseQuantity(product)}
                         />
                         <img 
                         src="https://as1.ftcdn.net/v2/jpg/03/73/49/86/1000_F_373498649_nBxauQ0ipBSVrVcMpWWVmTpXu3BLvRyY.jpg" 
                         className='action-icons' 
                         alt="decrease"
-                        onClick={this.decreaseQuantity} 
+                        // Step 8
+                        onClick={() => onDereaseQuantity(product)} 
                         />
                         <img 
                         src="https://as1.ftcdn.net/v2/jpg/04/92/30/88/1000_F_492308833_xXc7hxGdBrk3OQtb9NKCKq0s1hZ40PC6.jpg" 
                         className='action-icons' 
                         alt="delete" 
+                        onClick={() => onDeleteProduct(product.id)}
                         />
                     </div>
                 </div>

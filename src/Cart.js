@@ -1,9 +1,6 @@
-// Step 1
 import React from 'react'
-// Step 4 line 4
 import CartItem from './CartItem'
 class Cart extends React.Component{
-    // Step 9, paste the state here
     constructor(){
         super();
         this.state = {
@@ -32,19 +29,70 @@ class Cart extends React.Component{
             ]
         }
     }
-    render() {
+    // Step 1
+    // this need to get a product because we want tp know to increase quantity of which product
+    handleIncreaseQuantity = (product) => {
+        console.log('Hey Please icnrease the quantity', product);
+        // Step 5 37 - 47
+        const { products } = this.state;
+        const index = products.indexOf(product);
+
+        products[index].qty += 1;
+        this.setState({
+            // first products is from above list products
+            // second one is from products from above line
+            products: products
+            // or only
+            // products
+        })
+    }
+
+    // Step 6 for decreasing
+    handleDereaseQuantity = (product) => {
+        const {products} = this.state;
+        const index = products.indexOf(product);
+        if (products[index].qty === 0) {
+            return;
+        }
+
+        products[index].qty -= 1;
+        this.setState({
+            // first products is from above list products
+            // second one is from products from above line
+            products: products
+            // or only
+            // products
+        })
         
-        // Step 10
+    }
+
+    // Step 9 Delete function
+    // it will get the id of product we want to delete
+    handleDeleteProduct = (id) => {
+        // get products
+        const { products } = this.state;
+
+        // filter that particular product
+        // it will return me another array, and this array will contain products whose id is not equal to the id that is passed
+        const items = products.filter((item) => item.id !== id);
+        this.setState({
+            products: items 
+        })
+    }
+    render() {
         const { products } = this.state;
         return (
-            // Step 5 line 9 - 13
              <div className="cart">
-                {/* Step 6 adding props to cartItems
-                <CartItem qty = {1} price = {99} title = {"Watch"} img = {''}/> */}
-                {/* Step 11 */}
                 {products.map((product) => {
-                    // React doesn't know which item is edited so we shold pass key & give id tpo each product above in list
-                    return <CartItem product = {product} key = {product.id}/>
+                    return <CartItem 
+                    product = {product} 
+                    key = {product.id}
+                    // Step 2
+                    onIncreaseQuantity = {this.handleIncreaseQuantity}
+                    // Step 7
+                    onDereaseQuantity = {this.handleDereaseQuantity}
+                    onDeleteProduct = {this.handleDeleteProduct}
+                    />
                 })}
              </div>
         );
