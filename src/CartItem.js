@@ -1,13 +1,13 @@
 import React from 'react'
-class CartItem extends React.Component{
-    render() {
-        const {price, title, qty} = this.props.product;
+// Step 3 converting to functional component
+const CartItem = (props) => {
+        const {price, title, qty} = props.product;
         const {
             product, 
             onIncreaseQuantity,
             onDereaseQuantity, 
             onDeleteProduct
-        } = this.props;
+        } = props;
         return (
              <div className='cart-item'>
                 <div className='left-block'>
@@ -22,15 +22,12 @@ class CartItem extends React.Component{
                         src="https://as1.ftcdn.net/v2/jpg/02/51/03/82/1000_F_251038282_CLb3d8tk99bGoU9ILEYS8vY215fgRmGT.jpg" 
                         className='action-icons' 
                         alt="increase"
-                        // Step 4 we will not give reference, we will call the function
-                        // we also have to giv props product
                         onClick={() => onIncreaseQuantity(product)}
                         />
                         <img 
                         src="https://as1.ftcdn.net/v2/jpg/03/73/49/86/1000_F_373498649_nBxauQ0ipBSVrVcMpWWVmTpXu3BLvRyY.jpg" 
                         className='action-icons' 
                         alt="decrease"
-                        // Step 8
                         onClick={() => onDereaseQuantity(product)} 
                         />
                         <img 
@@ -43,7 +40,6 @@ class CartItem extends React.Component{
                 </div>
              </div>
         );
-    }
 }
 const styles ={
     image: {
