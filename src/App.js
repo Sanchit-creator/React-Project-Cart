@@ -1,8 +1,10 @@
-
+// Step 3
+import CartItem from "./CartItem";
 function App() {
   return (
     <div className="App">
-      <h1>Cart</h1>
+      {/* Step 4 */}
+      <CartItem />
     </div>
   );
 }
