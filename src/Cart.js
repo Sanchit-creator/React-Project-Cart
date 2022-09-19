@@ -29,25 +29,17 @@ class Cart extends React.Component{
             ]
         }
     }
-    // Step 1
-    // this need to get a product because we want tp know to increase quantity of which product
     handleIncreaseQuantity = (product) => {
         console.log('Hey Please icnrease the quantity', product);
-        // Step 5 37 - 47
         const { products } = this.state;
         const index = products.indexOf(product);
 
         products[index].qty += 1;
         this.setState({
-            // first products is from above list products
-            // second one is from products from above line
             products: products
-            // or only
-            // products
         })
     }
 
-    // Step 6 for decreasing
     handleDereaseQuantity = (product) => {
         const {products} = this.state;
         const index = products.indexOf(product);
@@ -57,23 +49,14 @@ class Cart extends React.Component{
 
         products[index].qty -= 1;
         this.setState({
-            // first products is from above list products
-            // second one is from products from above line
             products: products
-            // or only
-            // products
         })
         
     }
 
-    // Step 9 Delete function
-    // it will get the id of product we want to delete
     handleDeleteProduct = (id) => {
-        // get products
         const { products } = this.state;
 
-        // filter that particular product
-        // it will return me another array, and this array will contain products whose id is not equal to the id that is passed
         const items = products.filter((item) => item.id !== id);
         this.setState({
             products: items 
@@ -87,9 +70,7 @@ class Cart extends React.Component{
                     return <CartItem 
                     product = {product} 
                     key = {product.id}
-                    // Step 2
                     onIncreaseQuantity = {this.handleIncreaseQuantity}
-                    // Step 7
                     onDereaseQuantity = {this.handleDereaseQuantity}
                     onDeleteProduct = {this.handleDeleteProduct}
                     />
