@@ -1,38 +1,15 @@
 import React from 'react'
 class CartItem extends React.Component{
-    constructor(){
-        super();
-        this.state = {
-            price: 999,
-            title: 'Phone',
-            qty: 1,
-            img: ''
-        }
-        // Step 2 other way
-        // this.increaseQuantity = this.increaseQuantity.bind(this);
-    }
-    // Step 2 line 13 - 
-    // use arrow function to bind
+    // Step 8, their is no code, we have just removed the state
+
+
     increaseQuantity = () => {
-
-        // setState form 1
-
-        // this.setState({
-        //     // to get current qty
-        //     qty: this.state.qty + 1,
-        // })
-
-        // setState form 2 - if previous state req use this form
-
-        // instead of passing object we will pass function
         this.setState((prevState) => {
             return{
                 qty: prevState.qty + 1
             }
         })
     }
-
-    // Step 4
 
     decreaseQuantity = () => {
         const { qty } = this.state;
@@ -46,7 +23,8 @@ class CartItem extends React.Component{
         })
     }
     render() {
-        const {price, title, qty} = this.state;
+        // Step 7 use props instead of state, props is bringing value from parent called cart
+        const {price, title, qty} = this.props.product;
         return (
              <div className='cart-item'>
                 <div className='left-block'>
@@ -61,15 +39,12 @@ class CartItem extends React.Component{
                         src="https://as1.ftcdn.net/v2/jpg/02/51/03/82/1000_F_251038282_CLb3d8tk99bGoU9ILEYS8vY215fgRmGT.jpg" 
                         className='action-icons' 
                         alt="increase"
-                        // Step 1 line 33 one way
-                        // onClick={this.increaseQuantity.bind(this)} 
                         onClick={this.increaseQuantity}
                         />
                         <img 
                         src="https://as1.ftcdn.net/v2/jpg/03/73/49/86/1000_F_373498649_nBxauQ0ipBSVrVcMpWWVmTpXu3BLvRyY.jpg" 
                         className='action-icons' 
                         alt="decrease"
-                        // Step 3
                         onClick={this.decreaseQuantity} 
                         />
                         <img 
