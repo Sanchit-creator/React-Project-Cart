@@ -1,5 +1,4 @@
 import React from 'react'
-// Step 3 converting to functional component
 const CartItem = (props) => {
         const {price, title, qty} = props.product;
         const {

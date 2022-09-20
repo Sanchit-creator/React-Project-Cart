@@ -1,4 +1,3 @@
-// Step 1
 
 import React from 'react'
 const Navbar = (props) => {
@@ -8,16 +7,14 @@ const Navbar = (props) => {
                     <img
                      src='https://cdn-icons-png.flaticon.com/512/2838/2838895.png'
                      alt='cart-icon'
-                    //  Step 3
                      style={ styles.cartIcon }
                     />
-                    <span style={styles.cartCount}>3</span>
+                    {/* Step 6 */}
+                    <span style={styles.cartCount}>{props.count}</span>
                 </div>
              </div>
         );
 }
-
-// Step 2
 const styles ={
     cartIcon: {
         height: 32,
