@@ -1,35 +1,74 @@
 import React from 'react';
 import Cart from './Cart'
 import Navbar from './Navbar';
+// Step 1 line 5
+import firebase from 'firebase/compat/app';
+
+
 class App extends React.Component {
   constructor(){
     super();
     this.state = {
-        products: [
-            {
-                price: 999,
-                title: 'Watch',
-                qty: 1,
-                img: '',
-                id: 1
-            },
-            {
-                price: 999,
-                title: 'Mobile Phone',
-                qty: 10,
-                img: '',
-                id: 2
-            },
-            {
-                price: 999,
-                title: 'Laptop',
-                qty: 4,
-                img: '',
-                id: 3
-            }
-        ]
+      // Step 1 remove all products
+        products: [],
+        // Step 3 add loader
+        loading: true
     }
 }
+
+// Step 2 without listener
+// componentDidMount() {
+//   firebase
+//     .firestore()
+//     .collection("products")
+//     .get()
+//     .then(snapshot => {
+//       // an array of all documents
+//       snapshot.docs.map((doc)=>{
+//         // to get data from doc, we will use .doc from the function
+//         console.log(doc.data());
+//       });
+//       // first get the products
+//       const products = snapshot.docs.map((doc) => {
+//         // Define data here
+//         const data = doc.data();
+//         data['id'] = doc.id;
+//         return data;
+//       })
+//       this.setState({
+//         products,
+//         loading: false
+//       })
+//     });
+// }
+
+
+componentDidMount() {
+  firebase
+    .firestore()
+    .collection("products")
+    .onSnapshot(snapshot => {
+      // an array of all documents
+      snapshot.docs.map((doc)=>{
+        // to get data from doc, we will use .doc from the function
+        console.log(doc.data());
+      });
+      // first get the products
+      const products = snapshot.docs.map((doc) => {
+        // Define data here
+        const data = doc.data();
+        data['id'] = doc.id;
+        return data;
+      })
+      this.setState({
+        products,
+        loading: false
+      })
+    })
+}
+
+
+
 handleIncreaseQuantity = (product) => {
     console.log('Hey Please icnrease the quantity', product);
     const { products } = this.state;
@@ -89,22 +128,23 @@ getCartTotal = () => {
 
 
   render() {
-
-    const {products} = this.state;
+    // Step 4 add loading
+    const {products, loading} = this.state;
   
-  return (
-    <div className="App">
-      <Navbar count={this.getCartCount()}/>
-      <Cart 
-      products={products}
-      onIncreaseQuantity = {this.handleIncreaseQuantity}
-      onDereaseQuantity = {this.handleDereaseQuantity}
-      onDeleteProduct = {this.handleDeleteProduct}
-      />
-      
-    <div>Total: {this.getCartTotal()}</div>
-    </div>
-  );
+    return (
+      <div className="App">
+        <Navbar count={this.getCartCount()}/>
+        <Cart 
+          products={products}
+          onIncreaseQuantity = {this.handleIncreaseQuantity}
+          onDereaseQuantity = {this.handleDereaseQuantity}
+          onDeleteProduct = {this.handleDeleteProduct}
+        />
+        {/* Step 5 next line */}
+        {loading && <h1>Loading Products...</h1>}
+      <div>Total: {this.getCartTotal()}</div>
+      </div>
+    );
   }
 }
 
