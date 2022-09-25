@@ -2,7 +2,6 @@ import React from 'react';
 import Cart from './Cart'
 import Navbar from './Navbar';
 class App extends React.Component {
-  // Step 1 we changed app function to class so that we can make app as our state, so that navbar can also access things
   constructor(){
     super();
     this.state = {
@@ -64,7 +63,6 @@ handleDeleteProduct = (id) => {
         products: items 
     })
 }
-// Step 5
 getCartCount = () => {
   const {products} = this.state;
   // define count
@@ -76,15 +74,16 @@ getCartCount = () => {
   return count;
 }
 
-// FStep 2
 getCartTotal = () => {
   const {products} = this.state
   let cartTotal = 0;
   // loop over it
-  products.map((product) => {
-    cartTotal = cartTotal + product.qty * product.price
-  })
-
+  products.map(product => {
+    if (product.qty > 0) {
+      cartTotal = cartTotal + product.qty * product.price
+    }
+    return;
+  });
   return cartTotal;
 }
 
@@ -95,9 +94,7 @@ getCartTotal = () => {
   
   return (
     <div className="App">
-      {/* Step 4 */}
       <Navbar count={this.getCartCount()}/>
-      {/* Step 2 */}
       <Cart 
       products={products}
       onIncreaseQuantity = {this.handleIncreaseQuantity}
@@ -105,7 +102,6 @@ getCartTotal = () => {
       onDeleteProduct = {this.handleDeleteProduct}
       />
       
-    {/* // FStep 1 */}
     <div>Total: {this.getCartTotal()}</div>
     </div>
   );

@@ -9,7 +9,6 @@ const Navbar = (props) => {
                      alt='cart-icon'
                      style={ styles.cartIcon }
                     />
-                    {/* Step 6 */}
                     <span style={styles.cartCount}>{props.count}</span>
                 </div>
              </div>
