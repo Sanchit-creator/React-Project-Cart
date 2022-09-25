@@ -11,7 +11,6 @@ class App extends React.Component {
         products: [],
         loading: true
     }
-    // Step 3, we are calling firestore many times so we are doing it for once
     this.db = firebase.firestore();
 }
 
@@ -42,7 +41,6 @@ class App extends React.Component {
 
 
 componentDidMount() {
-  // Step 4
   this.db
     .collection("products")
     .onSnapshot(snapshot => {
@@ -71,11 +69,26 @@ handleIncreaseQuantity = (product) => {
     console.log('Hey Please icnrease the quantity', product);
     const { products } = this.state;
     const index = products.indexOf(product);
+    // Step 2 comment out first
 
-    products[index].qty += 1;
-    this.setState({
-        products: products
-    })
+    // instead of increasing quality here, increase in firebase
+    // products[index].qty += 1;
+    // this.setState({
+    //     products: products
+    // })
+    // We are getting the product from handleIncreaseQuantity = (product) here
+    // Useing this line of code we can get refrence of that particular product
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef
+      .update(
+        {
+          qty: products[index].qty+1
+        }
+      ).then(() => {
+        console.log('Updated Successfully');
+      }).catch((error) =>{
+        console.log('Error: ' , error);
+      })
 }
 
 handleDereaseQuantity = (product) => {
@@ -85,26 +98,47 @@ handleDereaseQuantity = (product) => {
         return;
     }
 
-    products[index].qty -= 1;
-    this.setState({
-        products: products
-    })
+    // Step 3
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef
+      .update(
+        {
+          qty: products[index].qty-1
+        }
+      ).then(() => {
+        console.log('Updated Successfully');
+      }).catch((error) =>{
+        console.log('Error: ' , error);
+      })
+    // products[index].qty -= 1;
+    // this.setState({
+    //     products: products
+    // })
     
 }
 
 handleDeleteProduct = (id) => {
     const { products } = this.state;
 
-    const items = products.filter((item) => item.id !== id);
-    this.setState({
-        products: items 
-    })
+    // const items = products.filter((item) => item.id !== id);
+    // this.setState({
+    //     products: items 
+    // })
+
+    // DStep 1, D = Delete
+    const docRef = this.db.collection('products').doc(id);
+    docRef
+       .delete()
+       .then(() => {
+        console.log('Deleted Sucessfully');
+       }).catch((error) => {
+        console.log('Error: ', error);
+       })
+
 }
 getCartCount = () => {
   const {products} = this.state;
-  // define count
   let count = 0;
-// loop over prod
   products.forEach((product) => {
     count += product.qty;
   });
@@ -114,7 +148,6 @@ getCartCount = () => {
 getCartTotal = () => {
   const {products} = this.state
   let cartTotal = 0;
-  // loop over it
   products.map(product => {
     if (product.qty > 0) {
       cartTotal = cartTotal + product.qty * product.price
@@ -124,19 +157,15 @@ getCartTotal = () => {
   return cartTotal;
 }
 
-// Step 2
 addProduct = () => {
   this.db
     .collection('products')
-    // .add method with object that is with our product in it
     .add({
       img: '',
       price: 900,
       qty: 3,
       title: 'Washing machine'
     })
-    // it will return promise if it is successfull, this will give document reference
-    // document(docRef) reference will point to that document
     .then((docRef) => {
       console.log('Product have been added', docRef);
     }).catch((error) => {
@@ -150,8 +179,8 @@ addProduct = () => {
     return (
       <div className="App">
         <Navbar count={this.getCartCount()}/>
-        {/* Step 1 */}
-        <button onClick={this.addProduct} style={{padding: 20, fontSize: 20}}>Add A Product</button>
+        {/* Step 1 comment this button */}
+        {/* <button onClick={this.addProduct} style={{padding: 20, fontSize: 20}}>Add A Product</button> */}
         <Cart 
           products={products}
           onIncreaseQuantity = {this.handleIncreaseQuantity}
