@@ -1,7 +1,6 @@
 import React from 'react';
 import Cart from './Cart'
 import Navbar from './Navbar';
-// Step 1 line 5
 import firebase from 'firebase/compat/app';
 
 
@@ -9,14 +8,13 @@ class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      // Step 1 remove all products
         products: [],
-        // Step 3 add loader
         loading: true
     }
+    // Step 3, we are calling firestore many times so we are doing it for once
+    this.db = firebase.firestore();
 }
 
-// Step 2 without listener
 // componentDidMount() {
 //   firebase
 //     .firestore()
@@ -44,8 +42,8 @@ class App extends React.Component {
 
 
 componentDidMount() {
-  firebase
-    .firestore()
+  // Step 4
+  this.db
     .collection("products")
     .onSnapshot(snapshot => {
       // an array of all documents
@@ -126,21 +124,40 @@ getCartTotal = () => {
   return cartTotal;
 }
 
+// Step 2
+addProduct = () => {
+  this.db
+    .collection('products')
+    // .add method with object that is with our product in it
+    .add({
+      img: '',
+      price: 900,
+      qty: 3,
+      title: 'Washing machine'
+    })
+    // it will return promise if it is successfull, this will give document reference
+    // document(docRef) reference will point to that document
+    .then((docRef) => {
+      console.log('Product have been added', docRef);
+    }).catch((error) => {
+      console.log('Error :', error);
+    })
+}
 
   render() {
-    // Step 4 add loading
     const {products, loading} = this.state;
   
     return (
       <div className="App">
         <Navbar count={this.getCartCount()}/>
+        {/* Step 1 */}
+        <button onClick={this.addProduct} style={{padding: 20, fontSize: 20}}>Add A Product</button>
         <Cart 
           products={products}
           onIncreaseQuantity = {this.handleIncreaseQuantity}
           onDereaseQuantity = {this.handleDereaseQuantity}
           onDeleteProduct = {this.handleDeleteProduct}
         />
-        {/* Step 5 next line */}
         {loading && <h1>Loading Products...</h1>}
       <div>Total: {this.getCartTotal()}</div>
       </div>
